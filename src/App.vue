@@ -1,28 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button @click="scanned = ''">reset</button>
+    <div>Value: {{ scanned }}</div>
+    <vue-qr-reader
+      ref="qr"
+      v-on:code-scanned="codeScanned"
+      :stop-on-scanned="stopped"
+      :use-back-camera="true"
+      :draw-on-found="true"
+      line-color="#00FF00"
+      :line-width="20"
+      :video-height="480"
+      :video-width="640"
+      :responsive="true"
+      v-if="!scanned"
+    >
+    </vue-qr-reader>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import VueQrReader from "vue-qr-reader/dist/lib/vue-qr-reader.umd.js";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    VueQrReader,
+  },
+
+  data: function() {
+    return {
+      scanned: "",
+      stopped: true,
+    };
+  },
+  methods: {
+    codeScanned(event) {
+      console.log(event);
+      this.scanned = event;
+    },
+  },
+};
+</script>
